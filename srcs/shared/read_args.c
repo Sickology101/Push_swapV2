@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_args.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:25:08 by mangheli          #+#    #+#             */
-/*   Updated: 2022/09/14 11:31:02 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/09/29 08:24:45 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print_stack(t_stack *stack)
 {
 	while (stack)
 	{
-		ft_printf("%d sorted = %d   lis = %d\n",stack->num, stack->sorted, stack->lis);
+		ft_printf("%d sorted = %d   chunk = %d\n",stack->num, stack->sorted, stack->chunk);
 		stack = stack->next;
 	}
 }
@@ -55,7 +55,7 @@ void	create_stack(char *str, t_stack **stack)
 		temp->num = get_num(str, &index);
 		temp->sorted = -1;
 		temp->final = 0;
-		temp->lis = 0;
+		temp->chunk = 0;
 		if (str[index] != '\0')
 			index++;
 		if ((*stack) == NULL)

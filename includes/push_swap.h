@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 10:09:15 by marius            #+#    #+#             */
-/*   Updated: 2022/09/14 11:23:24 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/09/29 08:21:32 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_stack
 	int				sorted;
 	int				current;
 	int				final;
-	int				lis;
+	int				chunk;
 	struct s_stack	*next;
 }		t_stack;
 

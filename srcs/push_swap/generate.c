@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 09:38:55 by mangheli          #+#    #+#             */
-/*   Updated: 2022/09/20 09:15:11 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/09/29 11:36:44 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,6 @@ void	push_b2(t_stack **a, t_stack **b, int *breakpoint)
 {
 	pa_pb(a, b);
 	ft_printf("pb\n");
-	(*b)->lis = 0;
 	if ((*b)->sorted == *breakpoint)
 	{
 		ra_rb(b);
@@ -345,38 +344,6 @@ int	last_b_is_small(t_stack *stack, int smallest)
 		return (0);
 }
 
-void	calculate_lis(t_stack *stack, int	smallest)
-{
-	t_stack	*temp;
-
-
-	temp = stack;
-	while (temp && temp->sorted != smallest)
-	{
-		if (temp->sorted == (stack->sorted + stack->lis))
-		{
-			stack->lis++;
-		}
-		temp = temp->next;
-	}
-	if (stack->next && stack->sorted != smallest)
-		calculate_lis(stack->next, smallest);
-}
-
-int	get_biggest_lis(t_stack *stack)
-{
-	int	count;
-
-	count = 0;
-	while(stack)
-	{
-		if (stack->lis > count)
-			count = stack->lis;
-		stack = stack->next;
-	}
-	return (count);
-}
-
 int	calculate_break2(t_stack *stack, int breakpoint)
 {
 	t_stack *temp;
@@ -433,207 +400,287 @@ int	calculate_break2_rev(t_stack *stack, int breakpoint)
 	return (breakpoint);
 }
 
-void	generate_big(t_stack **a, t_stack **b)
+int	calculate_chunks(t_stack *a)
 {
-	int	smallest;
-	int	breakpoint;
-	int		lis;
-	int		lisnext;
-	int		smallpos;
-	int		lispos;
-	int		count;
-	int		topsmall;
-	int		bottomsmall;
-	int		toplis;
-	int		bottomlis;
-	int		closesmall;
-	int		closelis;
+	int	size;
+	
+	size = count_stack(a);
+	if (size <= 20)
+		return (4);
+	else if (size <= 50)
+		return (8);
+	else if (size <= 100)
+		return (16);
+	else 
+		return (32);
+}
 
-	calculate_lis(*a, 0);
-	lis = get_biggest_lis(*a);
-	smallest = 0;
-	lisnext = 0;
-	breakpoint = calculate_break(*a, 0);
-	while((*a)->final == 0)
+void	assign_chunks(t_stack *a, int chunks)
+{
+	int	index;
+	int	size;
+	int	chunk_size;
+	t_stack *temp;
+	int	counter;
+	int	chunk;
+
+	size = count_stack(a);
+	chunk_size = size / chunks;
+	index = 0;
+	chunk = 1;
+	while (index < size && chunk <= chunks)
 	{
-		if ((*a)->sorted == smallest)
+		counter = 0;
+		temp = a;
+		while (counter < chunk_size)
 		{
-			(*a)->final = 2;
-			smallest++;
-			ra_rb(a);
-			ft_printf("ra\n");
+			if (temp->sorted == index)
+				{
+					temp->chunk = chunk;
+					counter++;
+					temp = a;
+					index++;
+				}
+			else
+				temp = temp->next;
+		}
+		chunk++;
+	}
+	chunk--;
+	while (a)
+	{
+		if (a->chunk == 0)
+			a->chunk = chunk;
+		a = a->next;
+	}
+}
+
+int	check_chunk_in_stack(t_stack *a, int chunksmall, int chunkbig)
+{
+	while (a)
+	{
+		if (a->chunk == chunksmall || a->chunk == chunkbig)
+			return (1);
+		a = a->next;
+	}
+	return (0);
+}
+
+void	push_b_chunks(t_stack **a, t_stack **b, int	chunksmall, int	chunkbig)
+{
+	while (check_chunk_in_stack(*a, chunksmall, chunkbig))
+	{
+		if ((*a)->chunk == chunksmall || (*a)->chunk == chunkbig)
+		{
+			pa_pb(a, b);
+			ft_printf("pb\n");
+		}
+		else if (*b && (*b)->chunk == chunkbig)
+		{
+			rr(a, b);
+			ft_printf("rr\n");
 		}
 		else
 		{
-			if (lisnext == 0)
-			{
-				if ((*a)->lis == lis)
-				{
-					lisnext = (*a)->sorted + 1;
-					(*a)->final = 1;
-					ra_rb(a);
-					ft_printf("ra\n");
-				}
-				else
-				{
-					push_b2(a, b, &breakpoint);
-				}
-			}
-			else
-			{
-				if ((*a)->sorted == lisnext)
-				{
-					lisnext = (*a)->sorted + 1;
-					(*a)->final = 1;
-					ra_rb(a);
-					ft_printf("ra\n");
-				}
-				else
-				{
-					push_b2(a, b, &breakpoint);
-				}
-			}
+			ra_rb(a);
+			ft_printf("ra\n");
 		}
 	}
-	while (last_b_is_small(*b, smallest))
+}
+
+int	check_in_a(t_stack *a, int smallest, int biggest)
+{
+	while (a)
+	{
+		if (a->sorted != smallest && a->sorted != biggest)
+			return (1);
+		a = a->next;
+	}
+	return (0);
+}
+
+void	push_b_chunksV2(t_stack **a, t_stack **b, int chunkbig, int smallest, int biggest)
+{
+	while (check_in_a(*a, smallest, biggest))
+	{
+		if ((*a)->sorted != smallest && (*a)->sorted != biggest)
+		{
+			pa_pb(a, b);
+			ft_printf("pb\n");
+		}
+		else if (*b && (*b)->chunk == chunkbig)
+		{
+			rr(a, b);
+			ft_printf("rr\n");
+		}
+		else
+		{
+			ra_rb(a);
+			ft_printf("ra\n");
+		}
+	}
+	if ((*a)->sorted == smallest)
+	{
+		if (*b && (*b)->chunk == chunkbig)
+		{
+			rr(a, b);
+			ft_printf("rr\n");
+		}
+		else
+		{
+			ra_rb(a);
+			ft_printf("ra\n");
+		}
+	}
+}
+
+int	count_dist(t_stack *b, int smallest)
+{
+	int	count;
+	
+	count = 0;
+	while (b && b->sorted != smallest)
+	{
+		count++;
+		b = b->next;
+	}
+	return (count);
+}
+
+int	count_dist_rev(t_stack *b, int smallest)
+{
+	int	count;
+
+	while (b && b->sorted != smallest)
+	{
+		b = b->next;
+	}
+	count = 0;
+	while (b)
+	{
+		count++;
+		b = b->next;
+	}
+	return (count);
+}
+
+int	calculate_dist(int count, int countrev)
+{
+	if (count < countrev)
+	{
+		return (count);
+	}
+	else
+	{
+		return (countrev);
+	}
+}
+
+void	push_aV2(t_stack **a, t_stack **b, int breakpoint)
+{
+	while ((*b)->sorted != breakpoint)
+	{
+		ra_rb(b);
+		ft_printf("rb\n");
+	}
+	pa_pb(b, a);
+	ft_printf("pa\n");
+}
+
+void	push_aV2_rev(t_stack **a, t_stack **b, int breakpoint)
+{
+	while ((*b)->sorted != breakpoint)
 	{
 		rra_rrb(b);
 		ft_printf("rrb\n");
-		pa_pb(b, a);
-		ft_printf("pa\n");
-		(*a)->final = 2;
-		ra_rb(a);
-		ft_printf("ra\n");
-		smallest++;
 	}
-	int index = 0;
-	while (*b && (*a)->sorted != 0)
+	pa_pb(b, a);
+	ft_printf("pa\n");
+}
+
+void	push_a(t_stack **a, t_stack **b, int *smallest, int *biggest)
+{
+	int	countsmall;
+	int	countsmallrev;
+	int	countbig;
+	int	countbigrev;
+	int	smalldist;
+	int	bigdist;
+
+	countsmall = count_dist(*b, *smallest);
+	countsmallrev = count_dist_rev(*b, *smallest);
+	countbig = count_dist(*b, *biggest);
+	countbigrev = count_dist_rev(*b, *biggest);
+	smalldist = calculate_dist(countsmall, countsmallrev);
+	bigdist = calculate_dist(countbig, countbigrev);
+	if (smalldist < bigdist)
 	{
-		smallpos = get_smallest_pos(*b, smallest) + 1;
-		lispos = get_smallest_pos(*b, (*a)->sorted - 1) + 1;
-		count = count_stack(*b);
-		topsmall = smallpos;
-		bottomsmall = count - smallpos;
-		if (topsmall < bottomsmall)
+		if (countsmall < countsmallrev)
 		{
-			closesmall = topsmall;
-		}
-		else
-		{
-			closesmall = bottomsmall;
-		}
-		toplis = lispos;
-		bottomlis = count - lispos;
-		if (toplis < bottomlis)
-		{
-			closelis = toplis;
-		}
-		else
-		{
-			closelis = bottomlis;
-		}
-		if (closesmall > closelis)
-		{
-			if (lispos < count / 2)
-			{
-				breakpoint = calculate_break2(*b, (*a)->sorted - 1);
-				while ((*b)->sorted != (*a)->sorted - 1)
-				{
-					if ((*b)->sorted == breakpoint)
-					{
-						pa_pb(b, a);
-						ft_printf("pa\n");
-						(*a)->final = 1;
-						ra_rb(a);
-						ft_printf("ra\n");
-						breakpoint++;
-					}
-					if ((*b)->sorted != (*a)->sorted - 1)
-					{
-						ra_rb(b);
-						ft_printf("rb\n");
-					}
-				}
-			}
-			else
-			{
-				while ((*b)->sorted != (*a)->sorted - 1)
-				{
-					breakpoint = calculate_break2_rev(*b, (*a)->sorted - 1);
-					rra_rrb(b);
-					ft_printf("rrb\n");
-					if (breakpoint != (*a)->sorted - 1)
-					{
-						pa_pb(b,a);
-						ft_printf("pa\n");
-						(*a)->final = 1;
-						ra_rb(a);
-						ft_printf("ra\n");
-						breakpoint++;
-					}
-				}
-			}
-		}
-		else
-		{
-			if (smallpos < count / 2)
-			{
-				breakpoint = calculate_break(*b, smallest);
-				while ((*b)->sorted != smallest)
-				{
-					if (breakpoint != smallest && (*b)->sorted == breakpoint)
-					{
-						pa_pb(b, a);
-						ft_printf("pa\n");
-						breakpoint--;
-					}
-					ra_rb(b);
-					ft_printf("rb\n");
-				}
-			}
-			else
-			{
-				breakpoint = calculate_break_rev(*b, smallest);
-				while ((*b)->sorted != smallest)
-				{
-					rra_rrb(b);
-					ft_printf("rrb\n");
-					if (breakpoint != smallest && (*b)->sorted == breakpoint)
-					{
-						pa_pb(b, a);
-						ft_printf("pa\n");
-						breakpoint--;
-					}
-				}
-			}
-		}
-		while ((*b)->sorted == (*a)->sorted - 1)
-		{
-			pa_pb(b, a);
-			ft_printf("pa\n");
-		}
-		while (last_a_is_not_sorted(*a))
-		{
-			rra_rrb(a);
-			ft_printf("rra\n");
-		}
-		while ((*b)->sorted == smallest)
-		{
-			pa_pb(b, a);
-			ft_printf("pa\n");
+			push_aV2(a, b, *smallest);
+			*smallest = *smallest + 1;
 			ra_rb(a);
 			ft_printf("ra\n");
-			smallest++;
 		}
-		while ((*a)->sorted == smallest)
+		else
 		{
+			push_aV2_rev(a, b, *smallest);
+			*smallest = *smallest + 1;
 			ra_rb(a);
 			ft_printf("ra\n");
-			smallest++;
 		}
+	}
+	else
+	{
+		if (countbig < countbigrev)
+		{
+			push_aV2(a, b, *biggest);
+			*biggest = *biggest - 1;
+		}
+		else
+		{
+			push_aV2_rev(a, b, *biggest);
+			*biggest = *biggest - 1;
+		}
+	}
+}
+
+void	generate_big(t_stack **a, t_stack **b)
+{
+	int	smallest;
+	int	biggest;
+	int		chunks;
+	int		chunksmall;
+	int		chunkbig;
+
+	chunks = calculate_chunks(*a);
+
+	assign_chunks(*a, chunks);
+	chunksmall = chunks / 2;
+	chunkbig = chunksmall + 1;
+	biggest = count_stack(*a) - 1;
+	while (chunksmall != 1)
+	{
+		push_b_chunks(a, b, chunksmall, chunkbig);
+		chunksmall--;
+		chunkbig++;
+	}
+	smallest = 0;
+	push_b_chunksV2(a, b, chunkbig, smallest, biggest);
+	smallest++;
+	biggest--;
+	int index = 0;
+	while (*b)
+	{
+		push_a(a, b, &smallest, &biggest);
+		
 		index++;
 	}
-	exit (1);
+	while ((*a)->sorted != 0)
+	{
+		ra_rb(a);
+		ft_printf("ra\n");
+	}
 }
 
 void	generate(t_stack **a, t_stack **b)
