@@ -6,7 +6,7 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:07:31 by mangheli          #+#    #+#             */
-/*   Updated: 2022/08/31 14:47:31 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/10 13:54:01 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,37 +41,38 @@ static int	read_inst(char *line, t_stack **a, t_stack **b)
 	return (0);
 }
 
+void	check_ok(t_stack *a, t_stack *b)
+{
+	if (check_sorted(a, b))
+		ft_printf("OK\n");
+	else
+		ft_printf("KO\n");
+}
+
 int	main(int argc, char **argv)
 {
 	t_stack	*a;
 	t_stack	*b;
-	char *line;
-	
+	char	*line;
+
 	if (argc != 2)
 	{
 		ft_printf("Please use ./checker {""$ARGS""} to run Checker\n");
 		return (0);
 	}
-	a = (t_stack *)malloc(sizeof(t_stack));
-	b = (t_stack *)malloc(sizeof(t_stack));
-	a = NULL;
 	create_stack(argv[1], &a);
 	check_unique(a);
-	b = NULL;
-	//print_stack(a);
 	while (get_next_line(0, &line))
 	{
-		//ft_printf("line = %s\n", line);
 		if (read_inst(line, &a, &b))
 		{
 			if (ft_strcmp(line, ""))
 				ft_printf("ERROR ");
 			break ;
 		}
+		free(line);
 	}
-	if (check_sorted(a, b))
-		ft_printf("OK\n");
-	else
-		ft_printf("KO\n");
+	check_ok(a, b);
+	clearlist(a);
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/15 08:10:42 by marius            #+#    #+#              #
-#    Updated: 2022/10/06 11:45:58 by mangheli         ###   ########.fr        #
+#    Updated: 2022/10/10 15:43:12 by mangheli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ V_SRC_DIR = srcs/visualizer/
 LIBFT = libft/
 
 S_SRC = $(S_SRC_DIR)read_args.c $(S_SRC_DIR)pa_pb.c $(S_SRC_DIR)ra_rb_rr.c $(S_SRC_DIR)rra_rrb_rrr.c $(S_SRC_DIR)sa_sb_ss.c $(S_SRC_DIR)utils.c
-P_SRC = $(P_SRC_DIR)push_swap.c $(P_SRC_DIR)generate.c
+P_SRC = $(P_SRC_DIR)push_swap.c $(P_SRC_DIR)generate.c $(P_SRC_DIR)utils2.c $(P_SRC_DIR)generate_helper1.c $(P_SRC_DIR)generate_helper2.c $(P_SRC_DIR)generate_helper3.c $(P_SRC_DIR)generate_helper4.c $(P_SRC_DIR)generate_helper5.c
 C_SRC = $(C_SRC_DIR)checker.c
 V_SRC = 
 
