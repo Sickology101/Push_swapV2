@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 09:38:55 by mangheli          #+#    #+#             */
-/*   Updated: 2022/09/29 11:36:44 by marius           ###   ########.fr       */
+/*   Updated: 2022/10/06 12:06:57 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,13 +138,53 @@ void generate_inv(t_stack **a, t_stack **b)
 	}
 }
 
-void	generate_4(t_stack **a, t_stack **b, int median)
+void	generate_4(t_stack **a, t_stack **b)
 {
-	if (median == 100)
-		median = 100;
-	if (!check_sorted_inv(*a))
+	int	smallest;
+
+	smallest = 0;
+	if (check_sorted_inv(*a))
 	{
 		generate_inv(a, b);
+	}
+	else
+	{
+		while ((*a)->sorted == smallest)
+		{
+			ra_rb(a);
+			ft_printf("ra\n");
+			smallest++;
+		}
+		while ((*a)->sorted != smallest)
+		{
+			pa_pb(a, b);
+			ft_printf("pb\n");
+		}
+		if ((*a)->next && (*a)->sorted > (*a)->next->sorted)
+		{
+			if ((*b) && (*b)->next && (*b)->sorted > (*b)->next->sorted)
+			{
+				ss(a, b);
+				ft_printf("ss\n");
+			}
+			else
+			{
+				sa_sb(a);
+				ft_printf("sa\n");
+			}
+		}
+		else
+		{
+			sa_sb(b);
+			ft_printf("sb\n");
+		}
+		while ((*b))
+		{
+			pa_pb(b, a);
+			ft_printf("pa\n");
+			ra_rb(a);
+			ft_printf("ra\n");
+		}
 	}
 }
 
@@ -708,7 +748,7 @@ void	generate(t_stack **a, t_stack **b)
 		}
 		else if (num == 4)
 		{
-			generate_4(a, b, median);
+			generate_4(a, b);
 		}
 		else if (num == 5)
 		{

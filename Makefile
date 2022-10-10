@@ -6,7 +6,7 @@
 #    By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/15 08:10:42 by marius            #+#    #+#              #
-#    Updated: 2022/09/13 11:22:14 by mangheli         ###   ########.fr        #
+#    Updated: 2022/10/06 11:45:58 by mangheli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ VISUALIZER = visualizer
 NAME = $(PUSH_SWAP) $(CHECKER) $(VISUALIZER)
 LIBFT_A = libftprintf.a
 
-COMP = gcc -Wall -Werror -Wextra -I includes -I libft/includes -I libft/libft -o
+COMP = gcc -Wall -Werror -Wextra -I includes -I libft/includes -I libft/libft
 COMP_V = gcc -Wall -Werror -Wextra -I includes -I libft/includes -I libft/libft -lmlx -framework OpenGL -framework AppKit -o
 
 OBJ_DIR = obj/
@@ -50,9 +50,13 @@ OBJ_PATH = $(S_OBJ_PATH) $(P_OBJ_PATH) $(C_OBJ_PATH)
 all: colour do_libft $(NAME)
 			@echo "\\n\033[32;1m PUSH_SWAP AND CHECKER COMPLETE \033[0m \\n"
 $(NAME):
-			$(COMP) $(CHECKER) $(C_SRC) $(S_SRC) $(LIBFT_A) -g
-			$(COMP) $(PUSH_SWAP) $(P_SRC) $(S_SRC) $(LIBFT_A) -g
-			#$(COMP_V) $(VISUALIZER) $(V_SRC) $(S_SRC) $(LIBFT_A) 
+			$(COMP) -o $(CHECKER) $(C_SRC) $(S_SRC) $(LIBFT_A) -g
+			$(COMP) -o $(PUSH_SWAP) $(P_SRC) $(S_SRC) $(LIBFT_A) -g
+			#$(COMP_V) $(VISUALIZER) $(V_SRC) $(S_SRC) $(LIBFT_A)
+
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c
+	@mkdir -p $(OBJ_DIR)
+	$(COMP) -c $< -o $@
 
 do_libft:
 			@make -C $(LIBFT)

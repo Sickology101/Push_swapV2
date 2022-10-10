@@ -1,4 +1,4 @@
-#include <string.h>
+/*#include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -23,4 +23,4 @@ int	main (int argc, char **argv)
 		index++;
 	}
 	printf("%s",buf);
-}
+}*/

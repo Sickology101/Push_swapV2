@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_args.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:25:08 by mangheli          #+#    #+#             */
-/*   Updated: 2022/09/29 08:24:45 by marius           ###   ########.fr       */
+/*   Updated: 2022/10/06 11:46:57 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	print_stack(t_stack *stack)
 }
 int	get_num(char *str, int	*index)
 {
-	int	n;
-	int sign;
+	long long	n;
+	long long sign;
 
 	n = 0;
 	sign = 1;
@@ -38,6 +38,11 @@ int	get_num(char *str, int	*index)
 		(*index)++;
 	}
 	n = n * sign;
+	if (n > 2147483647 || n < -2147483648)
+	{
+		ft_printf("ERROR! argument over MAX_INT / MIN_INT");
+		exit (1);
+	}
 	return (n);
 }
 
