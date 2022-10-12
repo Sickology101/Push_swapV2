@@ -6,7 +6,7 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 10:09:15 by marius            #+#    #+#             */
-/*   Updated: 2022/10/10 15:57:46 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/12 12:30:43 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	push_b(t_stack **a, t_stack **b, int median);
 void	generate_3(t_stack **a);
 void	generate_4(t_stack **a, t_stack **b);
 void	empty_b(t_stack **b, t_stack **a);
-void	generate_5(t_stack **a, t_stack **b, int median);
+void	generate_5(t_stack **a, t_stack **b);
 int		calculate_chunks(t_stack *a);
 int		check_chunk_in_stack(t_stack *a, int chunksmall, int chunkbig);
 void	assign_chunks(t_stack *a, int chunks);
@@ -92,5 +92,10 @@ void	push_av2(t_stack **a, t_stack **b, int breakpoint);
 void	push_av2_rev(t_stack **a, t_stack **b, int breakpoint);
 void	rotate_a2(t_stack **a);
 t_dist	init_dist(t_stack **b, t_data *data);
+void	generate_5_help(t_stack **a, t_stack **b);
+int		get_num2(t_stack *temp, char *str);
+void	check_valid(long long n, char *str, int index, t_stack *temp);
+void	create_stack2(int argc, char **argv, t_stack **stack);
+int		read_inst(char *line, t_stack **a, t_stack **b);
 
 #endif

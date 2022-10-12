@@ -6,7 +6,7 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 14:30:56 by mangheli          #+#    #+#             */
-/*   Updated: 2022/10/10 14:48:56 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/12 12:05:48 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ void	assign_chunks(t_stack *a, int chunks)
 
 	chunk = init_chunk(a, chunks);
 	index.index = 0;
-	while (index.index < chunk.size && chunk.chunk <= chunks)
+	temp = a;
+	while (index.index < chunk.size && chunk.chunk <= chunks && temp)
 	{
 		index.counter = 0;
-		temp = a;
 		while (index.counter < chunk.chunk_size)
 		{
 			if (temp->sorted == index.index)
@@ -71,7 +71,7 @@ void	push_b_chunks(t_stack **a, t_stack **b, int chunksmall, int chunkbig)
 			pa_pb(a, b);
 			ft_printf("pb\n");
 		}
-		else if (*b && (*b)->chunk == chunkbig)
+		else if (*b && (*b)->next && (*b)->chunk == chunkbig)
 		{
 			rr(a, b);
 			ft_printf("rr\n");

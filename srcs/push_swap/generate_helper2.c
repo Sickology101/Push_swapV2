@@ -6,7 +6,7 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 14:20:41 by mangheli          #+#    #+#             */
-/*   Updated: 2022/10/10 14:30:37 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/12 12:25:07 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,32 @@
 
 void	generate_3(t_stack **a)
 {
-	if ((*a)->next->sorted < (*a)->next->next->sorted)
+	while (!check_sorted_stack(*a))
 	{
-		sa_sb(a);
-		ft_printf("sa\n");
+		if ((*a)->sorted > (*a)->next->sorted)
+		{
+			sa_sb(a);
+			ft_printf("sa\n");
+		}
+		else
+		{
+			rra_rrb(a);
+			ft_printf("rra\n");
+		}
+	}
+}
+
+void	generate_5_help(t_stack **a, t_stack **b)
+{
+	if ((*a)->sorted == 4 || (*a)->sorted == 3)
+	{
+		pa_pb(a, b);
+		ft_printf("pb\n");
+	}
+	else if ((*a)->next->sorted == 4 || (*a)->next->sorted == 3)
+	{
+		ra_rb(a);
+		ft_printf("ra\n");
 	}
 	else
 	{
@@ -26,41 +48,24 @@ void	generate_3(t_stack **a)
 	}
 }
 
-void	empty_b(t_stack **b, t_stack **a)
+void	generate_5(t_stack **a, t_stack **b)
 {
-	while (*b)
+	while (count_stack(*a) > 3)
+	{
+		generate_5_help(a, b);
+	}
+	generate_3(a);
+	if ((*b)->sorted > (*b)->next->sorted)
+	{
+		ra_rb(b);
+		ft_printf("rb\n");
+	}
+	while ((*b))
 	{
 		pa_pb(b, a);
 		ft_printf("pa\n");
-	}
-}
-
-void	generate_5(t_stack **a, t_stack **b, int median)
-{
-	if (check_sorted_inv(*a))
-	{
-		generate_inv(a, b);
-	}
-	else
-	{
-		while (count_stack(*a) > 3)
-		{
-			push_b(a, b, median);
-		}
-		while (!check_sorted_stack(*a))
-		{
-			generate_3(a);
-		}
-		if (!check_sorted_inv(*b))
-		{
-			empty_b(b, a);
-		}
-		else
-		{
-			sa_sb(b);
-			ft_printf("sb\n");
-			empty_b(b, a);
-		}
+		ra_rb(a);
+		ft_printf("ra\n");
 	}
 }
 
@@ -89,3 +94,29 @@ int	check_chunk_in_stack(t_stack *a, int chunksmall, int chunkbig)
 	}
 	return (0);
 }
+
+/*void	generate_5(t_stack **a, t_stack **b)
+{
+	if (check_sorted_inv(*a))
+	{
+		generate_inv(a, b);
+	}
+	else
+	{
+		generate_5_help(a, b);
+		while (!check_sorted_stack(*a))
+		{
+			generate_3(a);
+		}
+		if (!check_sorted_inv(*b))
+		{
+			empty_b(b, a);
+		}
+		else
+		{
+			sa_sb(b);
+			ft_printf("sb\n");
+			empty_b(b, a);
+		}
+	}
+}*/

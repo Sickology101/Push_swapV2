@@ -6,7 +6,7 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:42:46 by mangheli          #+#    #+#             */
-/*   Updated: 2022/10/10 15:57:50 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/12 12:08:03 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,13 @@ t_dist	init_dist(t_stack **b, t_data *data)
 	dist.smalldist = calculate_dist(dist.countsmall, dist.countsmallrev);
 	dist.bigdist = calculate_dist(dist.countbig, dist.countbigrev);
 	return (dist);
+}
+
+void	empty_b(t_stack **b, t_stack **a)
+{
+	while (*b)
+	{
+		pa_pb(b, a);
+		ft_printf("pa\n");
+	}
 }

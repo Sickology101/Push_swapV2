@@ -6,7 +6,7 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:10:19 by marius            #+#    #+#             */
-/*   Updated: 2022/08/31 14:00:49 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/12 12:05:08 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ void	ra_rb(t_stack **stack)
 	t_stack	*loop;
 	t_stack	*insert;
 
+	if (!(*stack) || (*stack)->next == NULL)
+	{
+		ft_printf("ERROR: Trying to rotate an empty stack");
+	}
 	temp = *stack;
 	(*stack) = (*stack)->next;
 	loop = *stack;

@@ -6,7 +6,7 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:25:08 by mangheli          #+#    #+#             */
-/*   Updated: 2022/10/10 16:07:24 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/12 12:27:48 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,25 @@
 		stack = stack->next;
 	}
 }*/
+
+void	check_valid(long long n, char *str, int index, t_stack *temp)
+{
+	if (n > 2147483647 || n < -2147483648)
+	{
+		clearlist(temp);
+		ft_printf("ERROR! argument over MAX_INT / MIN_INT");
+		exit (1);
+	}
+	if (str[index] != '\0')
+	{
+		if (!ft_isdigit(str[index]) && str[index] != ' ')
+		{
+			clearlist(temp);
+			ft_printf("ERROR! argument is non-INT value");
+			exit (1);
+		}
+	}
+}
 
 int	get_num(t_stack *temp, char *str, int	*index)
 {
@@ -37,15 +56,12 @@ int	get_num(t_stack *temp, char *str, int	*index)
 	while (ft_isdigit(str[*index]))
 	{
 		n = n * 10 + str[*index] - '0';
+		if (n > 2147483648)
+			break ;
 		(*index)++;
 	}
 	n = n * sign;
-	if (n > 2147483647 || n < -2147483648)
-	{
-		clearlist(temp);
-		ft_printf("ERROR! argument over MAX_INT / MIN_INT");
-		exit (1);
-	}
+	check_valid(n, str, *index, temp);
 	return (n);
 }
 
@@ -84,6 +100,32 @@ void	create_stack(char *str, t_stack **stack)
 			(*stack)->next = temp;
 			(*stack) = (*stack)->next;
 		}
+	}
+	*stack = head;
+}
+
+void	create_stack2(int argc, char **argv, t_stack **stack)
+{
+	int		index;
+	t_stack	*temp;
+	t_stack	*head;
+
+	index = 1;
+	while (index < argc)
+	{
+		temp = init_temp();
+		temp->num = get_num2(temp, argv[index]);
+		if ((*stack) == NULL)
+		{
+			*stack = temp;
+			head = *stack;
+		}
+		else
+		{
+			(*stack)->next = temp;
+			(*stack) = (*stack)->next;
+		}
+		index++;
 	}
 	*stack = head;
 }

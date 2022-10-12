@@ -6,7 +6,7 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 09:38:55 by mangheli          #+#    #+#             */
-/*   Updated: 2022/10/10 16:00:03 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/12 11:56:57 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	generate_big(t_stack **a, t_stack **b)
 		rotate_a2(a);
 }
 
-void	generate_help(t_stack **a, t_stack **b, int num, int median)
+void	generate_help(t_stack **a, t_stack **b, int num)
 {
 	if (num == 2)
 	{
@@ -94,7 +94,7 @@ void	generate_help(t_stack **a, t_stack **b, int num, int median)
 	else if (num == 4)
 		generate_4(a, b);
 	else if (num == 5)
-		generate_5(a, b, median);
+		generate_5(a, b);
 	else if (check_sorted_inv(*a))
 		generate_inv(a, b);
 	else
@@ -104,18 +104,12 @@ void	generate_help(t_stack **a, t_stack **b, int num, int median)
 void	generate(t_stack **a, t_stack **b)
 {
 	int	median;
-	int	num;
 
 	median = 0;
 	sort(*a, &median);
-	num = median;
-	if ((num % 2) == 0)
-		median = median / 2 - 1;
-	else
-		median = median / 2;
 	while (!check_sorted_stack(*a))
 	{
-		generate_help(a, b, num, median);
+		generate_help(a, b, median);
 	}
 }
 
