@@ -6,7 +6,7 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 14:20:41 by mangheli          #+#    #+#             */
-/*   Updated: 2022/10/12 12:25:07 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/13 12:30:10 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,14 @@ void	generate_3(t_stack **a)
 
 void	generate_5_help(t_stack **a, t_stack **b)
 {
-	if ((*a)->sorted == 4 || (*a)->sorted == 3)
+	if ((*a)->next->next->sorted == 4 && (*a)->next->next->next->sorted == 3)
+	{
+		ra_rb(a);
+		ft_printf("ra\n");
+		ra_rb(a);
+		ft_printf("ra\n");
+	}
+	else if ((*a)->sorted == 4 || (*a)->sorted == 3)
 	{
 		pa_pb(a, b);
 		ft_printf("pb\n");
@@ -94,29 +101,3 @@ int	check_chunk_in_stack(t_stack *a, int chunksmall, int chunkbig)
 	}
 	return (0);
 }
-
-/*void	generate_5(t_stack **a, t_stack **b)
-{
-	if (check_sorted_inv(*a))
-	{
-		generate_inv(a, b);
-	}
-	else
-	{
-		generate_5_help(a, b);
-		while (!check_sorted_stack(*a))
-		{
-			generate_3(a);
-		}
-		if (!check_sorted_inv(*b))
-		{
-			empty_b(b, a);
-		}
-		else
-		{
-			sa_sb(b);
-			ft_printf("sb\n");
-			empty_b(b, a);
-		}
-	}
-}*/

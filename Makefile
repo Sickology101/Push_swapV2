@@ -5,77 +5,66 @@
 #                                                     +:+ +:+         +:+      #
 #    By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/02/15 08:10:42 by marius            #+#    #+#              #
-#    Updated: 2022/10/12 12:21:02 by mangheli         ###   ########.fr        #
+#    Created: 2022/10/13 12:33:55 by mangheli          #+#    #+#              #
+#    Updated: 2022/10/13 12:40:53 by mangheli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-PUSH_SWAP = push_swap
-CHECKER = checker
-VISUALIZER = visualizer
-NAME = $(PUSH_SWAP) $(CHECKER) $(VISUALIZER)
-LIBFT_A = libftprintf.a
+NAME		=	checker
+PUSHSWAP	=	push_swap
+LIBFT		=	libft/libftprintf.a
+FLAGS		=	-Wall -Wextra -Werror -I includes -I libft/includes -I libft/libft
 
-COMP = gcc -Wall -Werror -Wextra -I includes -I libft/includes -I libft/libft
-COMP_V = gcc -Wall -Werror -Wextra -I includes -I libft/includes -I libft/libft -lmlx -framework OpenGL -framework AppKit -o
+CHK_SRC		=	checker.c
+PS_SRC		=	generate_helper1.c generate_helper2.c generate_helper3.c generate_helper4.c generate_helper5.c generate.c push_swap.c utils2.c
+COMMON_SRC	=	pa_pb.c ra_rb_rr.c read_args.c rra_rrb_rrr.c utils.c utils3.c sa_sb_ss.c
 
-OBJ_DIR = obj/
-S_SRC_DIR = srcs/shared/
-P_SRC_DIR = srcs/push_swap/
-C_SRC_DIR = srcs/checker/
-V_SRC_DIR = srcs/visualizer/
-LIBFT = libft/
+LIBFT_DIR	=	libft/
+CHK_DIR		=	srcs/checker/
+PS_DIR		=	srcs/push_swap/
+COMMON_DIR	=	srcs/shared/
 
-S_SRC = $(S_SRC_DIR)read_args.c $(S_SRC_DIR)pa_pb.c $(S_SRC_DIR)ra_rb_rr.c $(S_SRC_DIR)rra_rrb_rrr.c $(S_SRC_DIR)sa_sb_ss.c $(S_SRC_DIR)utils.c $(S_SRC_DIR)utils3.c
-P_SRC = $(P_SRC_DIR)push_swap.c $(P_SRC_DIR)generate.c $(P_SRC_DIR)utils2.c $(P_SRC_DIR)generate_helper1.c $(P_SRC_DIR)generate_helper2.c $(P_SRC_DIR)generate_helper3.c $(P_SRC_DIR)generate_helper4.c $(P_SRC_DIR)generate_helper5.c
-C_SRC = $(C_SRC_DIR)checker.c
-V_SRC = 
+CHK_SRCS	=	$(addprefix $(CHK_DIR), $(CHK_SRC))
+PS_SRCS		=	$(addprefix $(PS_DIR), $(PS_SRC))
+COMMON_SRCS	=	$(addprefix $(COMMON_DIR), $(COMMON_SRC))
 
-S_OBJ = $(S_SRC:%.c=%.o)
-P_OBJ = $(P_SRC:%.c=%.o)
-C_OBJ = $(C_SRC:%.c=%.o)
-OBJ = $(S_OBJ) $(P_OBJ) $(C_OBJ)
+OBJ_DIR		=	obj/
+OBJS		= 	$(CHK_OBJS) $(PS_OBJS) $(COMMON_OBJS)
+CHK_OBJS	=	$(patsubst %, $(OBJ_DIR)%, $(CHK_SRC:.c=.o))
+PS_OBJS		=	$(patsubst %, $(OBJ_DIR)%, $(PS_SRC:.c=.o))
+COMMON_OBJS	=	$(patsubst %, $(OBJ_DIR)%, $(COMMON_SRC:.c=.o))
 
+all: $(NAME)
 
-S_SRC_PATH = $(S_SRC:%=$(S_SRC_DIR)%)
-P_SRC_PATH = $(P_SRC:%=$(P_SRC_DIR)%)
-C_SRC_PATH = $(C_SRC:%=$(C_SRC_DIR)%)
-SRC_PATH = $(S_SRC_PATH) $(P_SRC_PATH) $(C_SRC_PATH)
+$(NAME): $(LIBFT) $(OBJ_DIR) $(CHK_OBJS) $(PS_OBJS) $(COMMON_OBJS)
+	@gcc $(FLAGS) $(LIBFT) $(COMMON_OBJS) $(CHK_OBJS) -o $(NAME)
+	@gcc $(FLAGS) $(LIBFT) $(COMMON_OBJS) $(PS_OBJS) -o $(PUSHSWAP)
+	@printf "Compilation complete.\n"
+	
+$(LIBFT):
+	@make -C $(LIBFT_DIR)
 
-S_OBJ_PATH = $(addprefix $(OBJ_DIR), $(S_OBJ))
-P_OBJ_PATH = $(addprefix $(OBJ_DIR), $(P_OBJ))
-C_OBJ_PATH = $(addprefix $(OBJ_DIR), $(C_OBJ))
-OBJ_PATH = $(S_OBJ_PATH) $(P_OBJ_PATH) $(C_OBJ_PATH)
-
-all: colour do_libft $(NAME)
-			@echo "\\n\033[32;1m PUSH_SWAP AND CHECKER COMPLETE \033[0m \\n"
-$(NAME):
-			$(COMP) -o $(CHECKER) $(C_SRC) $(S_SRC) $(LIBFT_A) -g
-			$(COMP) -o $(PUSH_SWAP) $(P_SRC) $(S_SRC) $(LIBFT_A) -g
-			#$(COMP_V) $(VISUALIZER) $(V_SRC) $(S_SRC) $(LIBFT_A)
-
-$(OBJ_PATH)%.o: $(SRC_PATH)%.c
+$(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
-	$(COMP) -c $< -o $@
 
-do_libft:
-			@make -C $(LIBFT)
-			@cp $(LIBFT)/$(LIBFT_A) .
+$(OBJ_DIR)%.o: $(CHK_DIR)%.c
+	@gcc $(FLAGS) -o $@ -c $<
+	@printf "Checker compiled.\n"
 
-colour:
-			@echo "\x1b[36m""\x1b[1A\x1b[M"
+$(OBJ_DIR)%.o: $(PS_DIR)%.c
+	@gcc $(FLAGS) -o $@ -c $<
+	@printf "Push_swap compiled.\n"
 
-clean: colour
-			@/bin/rm -rf $(OBJ_DIR) $(LIBFT_A)
-			@make -C $(LIBFT) clean
-			@echo "\\n\033[32;1m Cleaned libft object files \033[0m"
+$(OBJ_DIR)%.o: $(COMMON_DIR)%.c
+	@gcc $(FLAGS) -o $@ -c $<
+	@printf "Common files compiled.\n"
+
+clean:
+	@make -C $(LIBFT_DIR) clean
+	@rm -rf $(OBJS) $(SURPL_O)
 
 fclean: clean
-			@/bin/rm -rf $(OBJ_DIR) $(LIBFT_A)
-			/bin/rm -f $(NAME)
-			@make -C $(LIBFT) clean
-			@echo "\\n\033[32;1m Cleaned $(NAME) \033[0m \\n"
+	@make -C $(LIBFT_DIR) fclean
+	@rm -rf $(NAME) $(PUSHSWAP) *.out
 
 re: fclean all
-
-.PHONY: all clean fclean re colour 

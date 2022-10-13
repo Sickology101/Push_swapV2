@@ -6,11 +6,17 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 12:18:24 by mangheli          #+#    #+#             */
-/*   Updated: 2022/10/12 12:30:36 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:59:53 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void	my_exit(void)
+{
+	write(2, "Error\n", 6);
+	exit (1);
+}
 
 int	read_inst(char *line, t_stack **a, t_stack **b)
 {
@@ -65,4 +71,30 @@ int	get_num2(t_stack *temp, char *str)
 	n = n * sign;
 	check_valid(n, str, index, temp);
 	return (n);
+}
+
+void	string_split(char *str, t_stack **a, t_stack **b)
+{
+	char	*line;
+	int		index;
+	int		index2;
+
+	index = 0;
+	line = (char *)malloc(sizeof(char) * 5);
+	while (str[index] != '\0')
+	{
+		index2 = 0;
+		while (str[index] != '\0' && str[index] != '\n')
+		{
+			line[index2++] = str[index++];
+		}
+		line[index2] = '\0';
+		if (str[index] == '\0')
+			break ;
+		if (str[index] == '\n')
+			index++;
+		if (read_inst(line, a, b))
+			my_exit();
+	}
+	free(line);
 }

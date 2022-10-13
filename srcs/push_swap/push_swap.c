@@ -6,7 +6,7 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:05:19 by mangheli          #+#    #+#             */
-/*   Updated: 2022/10/12 12:21:59 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/13 12:30:48 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int	main(int argc, char **argv)
 
 	if (argc < 2)
 	{
-		ft_printf("Please use ./push_swap {""$ARGS""} to run Push_swap\n");
-		return (0);
+		my_exit();
 	}
 	if (argc == 2)
 		create_stack(argv[1], &a);
@@ -29,8 +28,7 @@ int	main(int argc, char **argv)
 	if (!check_unique(a))
 	{
 		clearlist(a);
-		printf("Sequence containing duplicate numbers!");
-		return (0);
+		my_exit();
 	}
 	if (a->next != NULL)
 		generate(&a, &b);

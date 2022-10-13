@@ -6,7 +6,7 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 10:09:15 by marius            #+#    #+#             */
-/*   Updated: 2022/10/12 12:30:43 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:58:26 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,9 @@ int		get_num2(t_stack *temp, char *str);
 void	check_valid(long long n, char *str, int index, t_stack *temp);
 void	create_stack2(int argc, char **argv, t_stack **stack);
 int		read_inst(char *line, t_stack **a, t_stack **b);
+void	check_line(char *line);
+void	string_split(char *str, t_stack **a, t_stack **b);
+void	check_line(char *line);
+void	my_exit(void);
 
 #endif

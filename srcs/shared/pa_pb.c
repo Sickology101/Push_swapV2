@@ -6,7 +6,7 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 10:51:33 by marius            #+#    #+#             */
-/*   Updated: 2022/08/24 12:29:40 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/13 12:31:39 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	pa_pb(t_stack **stack1, t_stack **stack2)
 	t_stack	*temp;
 
 	if (*stack1 == NULL)
-		ft_printf("error: tring to push from empty stack\n");
+		return ;
 	else
 	{
 		temp = (*stack1)->next;

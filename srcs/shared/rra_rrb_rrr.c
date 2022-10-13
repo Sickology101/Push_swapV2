@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rra_rrb_rrr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:25:03 by marius            #+#    #+#             */
-/*   Updated: 2022/05/29 16:45:13 by marius           ###   ########.fr       */
+/*   Updated: 2022/10/13 09:57:11 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	rra_rrb(t_stack **stack)
 
 	temp = *stack;
 	loop = *stack;
+	if (!(*stack) || (*stack)->next == NULL)
+		return ;
 	while (loop->next)
 	{
 		prev = loop;

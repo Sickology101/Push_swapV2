@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sa_sb_ss.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 10:24:28 by marius            #+#    #+#             */
-/*   Updated: 2022/05/29 16:44:44 by marius           ###   ########.fr       */
+/*   Updated: 2022/10/13 09:57:16 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	sa_sb(t_stack **stack)
 	t_stack	*temp;
 	t_stack	*second;
 
+	if (!(*stack) || (*stack)->next == NULL)
+		return ;
 	second = (*stack)->next;
 	temp = (*stack)->next->next;
 	(*stack)->next->next = *stack;

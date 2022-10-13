@@ -6,7 +6,7 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:25:08 by mangheli          #+#    #+#             */
-/*   Updated: 2022/10/12 12:27:48 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/13 12:32:01 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,14 @@ void	check_valid(long long n, char *str, int index, t_stack *temp)
 	if (n > 2147483647 || n < -2147483648)
 	{
 		clearlist(temp);
-		ft_printf("ERROR! argument over MAX_INT / MIN_INT");
-		exit (1);
+		my_exit();
 	}
 	if (str[index] != '\0')
 	{
 		if (!ft_isdigit(str[index]) && str[index] != ' ')
 		{
 			clearlist(temp);
-			ft_printf("ERROR! argument is non-INT value");
-			exit (1);
+			my_exit();
 		}
 	}
 }

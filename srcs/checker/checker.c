@@ -6,7 +6,7 @@
 /*   By: mangheli <mangheli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:07:31 by mangheli          #+#    #+#             */
-/*   Updated: 2022/10/12 12:30:03 by mangheli         ###   ########.fr       */
+/*   Updated: 2022/10/13 12:45:03 by mangheli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,12 @@ void	check_unique_help(t_stack *a)
 	if (!check_unique(a))
 	{
 		clearlist(a);
-		printf("ERROR: Sequence containing duplicate numbers!");
-		exit (1);
+		my_exit();
 	}
 	if (!a)
 	{
 		clearlist(a);
-		exit (1);
+		my_exit();
 	}
 }
 
@@ -39,17 +38,7 @@ static void	check_arg(int argc)
 {
 	if (argc < 2)
 	{
-		ft_printf("Please use ./checker {""$ARGS""} to run Checker\n");
-		exit (1);
-	}
-}
-
-static void	check_line(char *line)
-{
-	if (ft_strcmp(line, ""))
-	{
-		ft_printf("ERROR ");
-		exit (1);
+		my_exit();
 	}
 }
 
@@ -58,6 +47,7 @@ int	main(int argc, char **argv)
 	t_stack	*a;
 	t_stack	*b;
 	char	*line;
+	char	*str;
 
 	check_arg(argc);
 	if (argc == 2)
@@ -65,16 +55,18 @@ int	main(int argc, char **argv)
 	else
 		create_stack2(argc, argv, &a);
 	check_unique_help(a);
+	str = (char *)malloc(sizeof(char));
+	str[0] = '\0';
 	while (get_next_line(0, &line))
 	{
-		if (read_inst(line, &a, &b))
-		{
-			check_line(line);
-			break ;
-		}
+		str = ft_strupdate(str, line);
+		str = ft_strupdate(str, "\n");
 		free(line);
 	}
+	string_split(str, &a, &b);
+	free(str);
 	check_ok(a, b);
 	clearlist(a);
+	clearlist(b);
 	return (0);
 }
